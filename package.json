@@ -6,8 +6,6 @@
     "build": "tsc --build",
     "start:prod": "node --env-file=.env dist/index.js --omit-dev",
     "start:dev": "node --watch --env-file=.env dist/index.js",
-    "start:testdb": "docker run -itd --rm -p 5432:5432 -e POSTGRES_PASSWORD=Admin@123 --name simple-rest postgres",
-    "destroy:testdb": "docker stop simple-rest",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -1,5 +1,5 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { CreateTaskDTO } from "../dto/task";
+import { CreateTaskDTO, UpdateTaskDTO } from "../dto/task";
 import prisma from "../model/prisma.config";
 import { BadRequestError, NotFoundError } from "../utils/error.handler";
 
@@ -16,7 +16,7 @@ async function createTask(taskDetails: CreateTaskDTO) {
   }
 }
 
-async function updateTask(taskDetails: any, tid: number) {
+async function updateTask(taskDetails: UpdateTaskDTO, tid: number) {
   try {
     await prisma.task.update({
       where: { tid },
