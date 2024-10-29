@@ -1,9 +1,14 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { CreateTaskDTO, UpdateTaskDTO } from "../dto/task";
 import prisma from "../model/prisma.config";
 import { BadRequestError, NotFoundError } from "../utils/error.handler";
+import { Status } from "@prisma/client";
 
-async function createTask(taskDetails: CreateTaskDTO) {
+interface ITask {
+  task: string;
+  status: Status;
+}
+
+async function createTask(taskDetails: ITask) {
   try {
     const { task, status } = taskDetails;
     await prisma.task.create({
@@ -16,7 +21,7 @@ async function createTask(taskDetails: CreateTaskDTO) {
   }
 }
 
-async function updateTask(taskDetails: UpdateTaskDTO, tid: number) {
+async function updateTask(taskDetails: ITask, tid: number) {
   try {
     await prisma.task.update({
       where: { tid },
@@ -47,7 +52,7 @@ async function fetchAllTask() {
 
     return { tasks };
   } catch (e) {
-    throw new BadRequestError("Something bad happened during updating task");
+    throw new BadRequestError("Something bad happened during fetching task");
   }
 }
 

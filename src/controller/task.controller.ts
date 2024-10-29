@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AppError } from "../utils/error.handler";
+import { AppError, BadRequestError } from "../utils/error.handler";
 import * as taskService from "../service/task.service";
 
 async function createTask(req: Request, res: Response) {
@@ -16,7 +16,8 @@ async function createTask(req: Request, res: Response) {
 
 async function updateTask(req: Request, res: Response) {
   try {
-    const result = await taskService.updateTask(req.body, parseInt(req.params["id"]));
+    if (typeof req.params.id !== "number") throw new BadRequestError("Invalid ID data type");
+    const result = await taskService.updateTask(req.body, req.params.id);
     return res.status(200).json(result);
   } catch (e) {
     if (e instanceof AppError) {
@@ -40,7 +41,8 @@ async function fetchAllTask(req: Request, res: Response) {
 
 async function deleteTask(req: Request, res: Response) {
   try {
-    const result = await taskService.deleteTask(parseInt(req.params["id"]));
+    if (typeof req.params.id !== "number") throw new BadRequestError("Invalid ID data type");
+    const result = await taskService.deleteTask(req.params.id);
     return res.status(200).json(result);
   } catch (e) {
     if (e instanceof AppError) {

@@ -1,14 +1,14 @@
 import * as taskController from "../controller/task.controller";
 
 import { Router } from "express";
-import { validateDTO } from "../middleware/validation.middleware";
-import { CreateTaskDTO, UpdateTaskDTO, UserIdDTO } from "../dto/task";
+import { createTaskValidator, updateTaskValidator, taskIdValidator } from "../validator/task.validator";
+import validate from "../middleware/validator.middleware";
 
 const router = Router();
 
-router.route("/").post(validateDTO({ body: CreateTaskDTO }), taskController.createTask);
-router.route("/:id").patch(validateDTO({ body: UpdateTaskDTO, params: UserIdDTO }), taskController.updateTask);
+router.route("/").post(createTaskValidator, validate, taskController.createTask);
+router.route("/:id").patch(updateTaskValidator, taskIdValidator, validate, taskController.updateTask);
 router.route("/").get(taskController.fetchAllTask);
-router.route("/:id").delete(validateDTO({ params: UserIdDTO }), taskController.deleteTask);
+router.route("/:id").delete(taskIdValidator, validate, taskController.deleteTask);
 
 export default router;
